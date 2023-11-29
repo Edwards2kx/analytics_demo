@@ -1,3 +1,4 @@
+import 'package:analytics_demo/ui/aoi_info/apps_of_interest_page.dart';
 import 'package:analytics_demo/ui/bluetooth_info/bluetooth_info_page.dart';
 import 'package:analytics_demo/ui/device_info/device_info_page.dart';
 import 'package:analytics_demo/ui/home/home_page.dart';
@@ -43,6 +44,12 @@ final GoRouter appRouter = GoRouter(
       path: NetworkInfoPage.route,
       builder: (BuildContext context, GoRouterState state) {
         return const NetworkInfoPage();
+      },
+    ),
+    GoRoute(
+      path: AOIInfoPage.routeName,
+      builder: (BuildContext context, GoRouterState state) {
+        return const AOIInfoPage();
       },
     ),
   ],

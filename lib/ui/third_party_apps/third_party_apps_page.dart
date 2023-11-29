@@ -1,4 +1,5 @@
 import 'package:analytics_demo/providers/third_party_apps_provider.dart';
+import 'package:analytics_demo/ui/widgets/loading_data_widget.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +21,7 @@ class ThirdPartyAppsPage extends StatelessWidget {
         future: provider.getAppsInstalled(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
-              child: Text("Cargando datos"),
-            );
+            return const LoadingDataWidget();
           } else {
             return AppsInfoView(snapshot.data);
           }
@@ -48,20 +47,14 @@ class AppsInfoView extends StatelessWidget {
         itemBuilder: (context, index) {
           final appWithIcon = apps![index] as ApplicationWithIcon;
           return ListTile(
-            isThreeLine: true,
             title: Text(apps![index].appName),
             subtitle: Text(apps![index].packageName),
-            leading: Image.memory(
-              appWithIcon.icon,
-              // height: 40.0,
-              // fit: BoxFit.fitHeight,
-            ),
-            trailing: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => AppDetailView(apps![index])));
-              },
-              icon: const Icon(Icons.arrow_forward_ios_outlined),
+            leading: Image.memory(appWithIcon.icon),
+            trailing: const Icon(Icons.arrow_forward_ios_outlined),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => AppDetailView(apps![index]),
+              ),
             ),
           );
         },
@@ -83,9 +76,10 @@ class AppDetailView extends StatelessWidget {
         children: [
           Image.memory(
             appWithIcon.icon,
-            height: 180.0,
+            height: 160.0,
             fit: BoxFit.fitHeight,
           ),
+          const SizedBox(height: 16),
           ListTile(
             title: Text(app.packageName),
             subtitle: const Text("Package"),
@@ -101,6 +95,11 @@ class AppDetailView extends StatelessWidget {
           ListTile(
             title: Text(app.versionCode.toString()),
             subtitle: const Text("version code"),
+          ),
+          ListTile(
+            title: const Text('Ir a la aplicación'),
+            trailing: const Icon(Icons.arrow_forward_ios_outlined),
+            onTap: () => app.openApp(),
           ),
         ],
       ),

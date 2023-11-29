@@ -45,12 +45,10 @@ class PoiInfoView extends StatelessWidget {
     } else {
       return ListView(
         children: [
-          ListTile(
-              title:
-                  Text('Tu latitud actual: ${position?.latitude.toString()}')),
-          ListTile(
-              title:
-                  Text('Tu longitud actual: ${position?.longitude.toString()}'))
+          ListTile(title: Text('Latitud actual: ${position?.latitude}')),
+          ListTile(title: Text('Longitud actual: ${position?.longitude}')),
+          ListTile(title: Text('Altitud actual: ${position?.altitude}')),
+          ListTile(title: Text('Precisión actual: ${position?.accuracy}'))
         ],
       );
     }

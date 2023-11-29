@@ -47,6 +47,9 @@ dependencies:
   connectivity_plus: ^5.0.2
   wifi_hunter: ^1.1.1+2
   network_info_plus: ^4.1.0
+  url_launcher: ^6.2.1
+  external_app_launcher: ^3.1.0
+  #device_imei: ^0.0.4+1
 
 dev_dependencies:
   flutter_test:
