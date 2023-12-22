@@ -1,5 +1,5 @@
 import 'package:analytics_demo/ui/aoi_info/apps_of_interest_page.dart';
-import 'package:analytics_demo/ui/bluetooth_info/bluetooth_info_page.dart';
+// import 'package:analytics_demo/ui/bluetooth_info/bluetooth_info_page.dart';
 import 'package:analytics_demo/ui/device_info/device_info_page.dart';
 import 'package:analytics_demo/ui/home/home_page.dart';
 import 'package:analytics_demo/ui/network_info/network_info_page.dart';
@@ -28,12 +28,12 @@ final GoRouter appRouter = GoRouter(
         return const ThirdPartyAppsPage();
       },
     ),
-    GoRoute(
-      path: BluetoothInfoPage.route,
-      builder: (BuildContext context, GoRouterState state) {
-        return const BluetoothInfoPage();
-      },
-    ),
+    // GoRoute(
+    //   path: BluetoothInfoPage.route,
+    //   builder: (BuildContext context, GoRouterState state) {
+    //     return const BluetoothInfoPage();
+    //   },
+    // ),
     GoRoute(
       path: PoiInfoPage.route,
       builder: (BuildContext context, GoRouterState state) {

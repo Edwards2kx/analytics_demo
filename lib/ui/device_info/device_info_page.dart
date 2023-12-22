@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:analytics_demo/domain/models/user_data_info.dart';
+import 'package:analytics_demo/domain/services/device_data_service.dart';
 import 'package:analytics_demo/providers/device_info_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +11,26 @@ class DeviceInfoPage extends StatelessWidget {
 
   const DeviceInfoPage({super.key});
 
+  void printDeviceDataToConsole() async {
+    final userData = UserDataInfo();
+    // final DeviceDataService dataService = DeviceDataService(userData: userData);
+    final DeviceDataService dataService = DeviceDataService();
+    final deviceData = await dataService.getDeviceData();
+    debugPrint(deviceData.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DeviceInfoProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Información del dispositivo"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          printDeviceDataToConsole();
+        },
+        child: const Icon(Icons.local_printshop_outlined),
       ),
       body: FutureBuilder<BaseDeviceInfo?>(
         future: provider.getDeviceInfo(),

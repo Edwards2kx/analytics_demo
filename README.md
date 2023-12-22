@@ -41,3 +41,9 @@ cuando ya disponga de permisos habilitar un servicio en segundo plano dento de l
 que cada cirto tiempo este revisando informacion variante como redes wifi ubicacion 
 las aplicaciones instaladas o informacion del dispositivo solo cuando se inicie la aplicacion
 talves pensar en almacernar eso en una base de datos local para evitar estar tomando esa informacion de forma repetida sin necesidad
+
+
+tener un json de configaracion para las apps de interes en android que simula la llegada desde 
+el backend
+
+montar servidor http para llamadas a un backend 

@@ -1,10 +1,12 @@
+import 'package:analytics_demo/domain/services/device_data_service.dart';
 import 'package:analytics_demo/ui/aoi_info/apps_of_interest_page.dart';
-import 'package:analytics_demo/ui/bluetooth_info/bluetooth_info_page.dart';
 import 'package:analytics_demo/ui/device_info/device_info_page.dart';
 import 'package:analytics_demo/ui/network_info/network_info_page.dart';
 import 'package:analytics_demo/ui/poi_info/poi_info_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../third_party_apps/third_party_apps_page.dart';
@@ -13,6 +15,15 @@ class HomePage extends StatelessWidget {
   static String route = "/";
   const HomePage({super.key});
 
+  // void saveJsonToFile(String? jsonData) {
+  //   if (jsonData == null) return;
+  //   String filePath = 'assets/json_output.json';
+  //   // final jsonString = jsonEncode(jsonData);
+  //   File file = File(filePath);
+  //   file.writeAsStringSync(jsonData);
+  //   debugPrint('JSON guardado en: $filePath');
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +31,22 @@ class HomePage extends StatelessWidget {
         title: const Text("Opciones de Analítica"),
       ),
       body: const HomePageView(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          //  final dataService =  DeviceDataService();
+          //  final userDataInfo = await dataService.getUserDataInfo();
+          //  debugPrint(userDataInfo?.toJson());
+          final getUserInfoAnalytics =
+              await DeviceDataService().getUserInfoAnalytics();
+
+          // debugPrint(getUserInfoAnalytics?.toJson());
+          // saveJsonToFile(getUserInfoAnalytics?.toJson());
+          final response = getUserInfoAnalytics?.toJson();
+          debugPrint(response);
+
+        },
+        child: const Icon(Icons.search_outlined),
+      ),
     );
   }
 }
@@ -94,26 +121,84 @@ class HomePageView extends StatelessWidget {
           title: const Text("Información de BT"),
           subtitle: const Text(
               "Listado de dispositivos emparejados\nRequiere permiso de BT"),
-          onTap: () =>
-              Permission.bluetooth.request().isGranted.then((value) => {
-                    if (value)
-                      context.push(BluetoothInfoPage.route)
-                    else
-                      _showSnackBar(context, 'Bluetooth'),
-                  }),
+          onTap: () async {
+            // if(await FlutterBluePlus.
+
+            if (await FlutterBluePlus.isSupported == false) {
+              // debugPrint("Bluetooth not supported by this device");
+              return;
+            }
+            if (await FlutterBluePlus.isSupported) {
+              // final btResults = FlutterBluePlus.lastScanResults;
+              try {
+                await FlutterBluePlus.startScan();
+                debugPrint((await FlutterBluePlus.adapterName));
+                final adapterState = FlutterBluePlus.adapterState;
+                final first = await adapterState.first;
+                debugPrint('estado first : ${first.toString()}');
+                final systemDevices = await FlutterBluePlus.systemDevices;
+                final btResults = FlutterBluePlus.lastScanResults;
+                final btResults2 =
+                    await FlutterBluePlus.bondedDevices; //este es el bueno
+                debugPrint('results $btResults');
+                debugPrint('results2 $btResults2');
+                debugPrint('systemDevices $systemDevices');
+                // FlutterBluePlus.
+              } catch (e) {
+                debugPrint('error $e');
+              }
+            }
+
+            // final btPermisionStatus = await Permission.bluetooth.serviceStatus;
+            // if (btPermisionStatus != ServiceStatus.enabled) {
+            //   final response = await Permission.bluetooth.request();
+            //   debugPrint('response $response');
+            // }
+            // debugPrint('bt permision status $btPermisionStatus');
+          },
+          // onTap: () => {},
+          // Permission.bluetooth.request().isGranted.then((value) => {
+          //       if (value)
+          //         context.push(BluetoothInfoPage.route)
+          //       else
+          //         _showSnackBar(context, 'Bluetooth'),
+          //     }),
           trailing: const Icon(Icons.arrow_forward_ios_outlined),
         ),
         ListTile(
           title: const Text("Información de lugares cercanos"),
           subtitle: const Text("Negocios cerca de la ubicación actual"),
-          onTap: () => Permission.location.request().isGranted.then(
-                (response) => {
-                  if (response)
-                    context.push(PoiInfoPage.route)
-                  else
-                    _showSnackBar(context, 'Ubicación'),
-                },
-              ),
+          onTap: () async {
+            // Geolocator.checkPermission().then((permision) => if(permission == LocationPermission.denied ) { })
+            final permision = await geo.Geolocator.checkPermission();
+            if (permision == geo.LocationPermission.whileInUse ||
+                permision == geo.LocationPermission.always) {
+              // ignore: use_build_context_synchronously
+              context.push(PoiInfoPage.route);
+            } else if (permision == geo.LocationPermission.deniedForever) {
+              // ignore: use_build_context_synchronously
+              _showSnackBar(context, 'Ubicación');
+            } else if (permision == geo.LocationPermission.denied) {
+              final requestResponse = await geo.Geolocator.requestPermission();
+              if (requestResponse == geo.LocationPermission.denied ||
+                  requestResponse == geo.LocationPermission.deniedForever) {
+                // ignore: use_build_context_synchronously
+                _showSnackBar(context, 'Ubicación');
+              } else {
+                // ignore: use_build_context_synchronously
+                context.push(PoiInfoPage.route);
+              }
+            }
+          },
+          // onTap: () => Permission.location.request().isGranted.then(
+          //       (response) => {
+          // if (response)
+          //   context.push(PoiInfoPage.route)
+          // else
+          //   _showSnackBar(context, 'Ubicación'),
+          //     context.push(PoiInfoPage.route)
+          //   },
+          // ),
           trailing: const Icon(Icons.arrow_forward_ios_outlined),
         ),
         ListTile(

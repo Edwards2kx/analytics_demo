@@ -1,6 +1,5 @@
 import 'package:analytics_demo/config/app_router.dart';
 import 'package:analytics_demo/providers/aoi_info_provider.dart';
-import 'package:analytics_demo/providers/bluetooth_info_provider.dart';
 import 'package:analytics_demo/providers/device_info_provider.dart';
 import 'package:analytics_demo/providers/network_info_provider.dart';
 import 'package:analytics_demo/providers/poi_info_provider.dart';
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DeviceInfoProvider()),
         ChangeNotifierProvider(create: (_) => ThirdPartyAppsInfoProvider()),
         ChangeNotifierProvider(create: (_) => NetworkInfoProvider()),
-        ChangeNotifierProvider(create: (_) => BluetoothInfoProvider()),
         ChangeNotifierProvider(create: (_) => PoiInfoProvider()),
         ChangeNotifierProvider(create: (_) => AOIInfoProvider()),
       ],

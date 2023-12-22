@@ -6,7 +6,6 @@ class WifiInfoService {
   Future<WiFiHunterResult?> getNearbyNetworks() async {
     try {
       final response = await WiFiHunter.huntWiFiNetworks;
-      // response.results.first.
       return response;
     } catch (e) {
       debugPrint('error $e');

@@ -1,3 +1,5 @@
+
+import 'package:analytics_demo/domain/services/device_data_service.dart';
 import 'package:analytics_demo/providers/poi_info_provider.dart';
 import 'package:analytics_demo/ui/widgets/loading_data_widget.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +10,39 @@ class PoiInfoPage extends StatelessWidget {
   static String route = '/poiInfo';
   const PoiInfoPage({super.key});
 
+  void printUserLocationToConsole() async {
+    // final userData = UserData();
+    // final DeviceDataService dataService = DeviceDataService(userData: userData);
+    final DeviceDataService dataService = DeviceDataService();
+    final location = await dataService.getUserLocation();
+    debugPrint(location.toString());
+    // if (location != null) {
+    //   try {
+    //     List<Placemark> placemarks = await placemarkFromCoordinates(
+    //         location.latitute, location.longitude);
+    //     if (placemarks.isNotEmpty) {
+    //       debugPrint('placemark 0 : ${placemarks}');
+    //     } else {
+    //       debugPrint('no placemarks');
+    //     }
+    //   } catch (e) {
+    //     debugPrint('exception $e');
+    //   }
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PoiInfoProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('POI cercanos'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          printUserLocationToConsole();
+        },
+        child: const Icon(Icons.local_printshop_outlined),
       ),
       body: FutureBuilder<Position?>(
         future: provider.getLocation(),
