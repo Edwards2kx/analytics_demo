@@ -15,8 +15,9 @@ class InfoAnalytics {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'unique_id': uniqueId,
-      'user_data': userData.toMap(),
+      //'user_data': userData.toMap(),
     };
   }
+
   String toJson() => json.encode(toMap());
 }

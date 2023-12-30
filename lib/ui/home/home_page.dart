@@ -1,3 +1,4 @@
+import 'package:analytics_demo/domain/services/analytic_service.dart';
 import 'package:analytics_demo/domain/services/device_data_service.dart';
 import 'package:analytics_demo/ui/aoi_info/apps_of_interest_page.dart';
 import 'package:analytics_demo/ui/device_info/device_info_page.dart';
@@ -33,17 +34,18 @@ class HomePage extends StatelessWidget {
       body: const HomePageView(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          //  final dataService =  DeviceDataService();
-          //  final userDataInfo = await dataService.getUserDataInfo();
-          //  debugPrint(userDataInfo?.toJson());
-          final getUserInfoAnalytics =
-              await DeviceDataService().getUserInfoAnalytics();
-
-          // debugPrint(getUserInfoAnalytics?.toJson());
-          // saveJsonToFile(getUserInfoAnalytics?.toJson());
-          final response = getUserInfoAnalytics?.toJson();
-          debugPrint(response);
-
+//* llamar al servicio que inicializa todo
+          AnalyticService service = AnalyticService(key: '', endpoint: '');
+//* invocar el metodo que obtiene lista de aplicaciones android
+          // final appsList = await service.getThirdPartyAppsFromServer();
+          // debugPrint('lista de apps: \n$appsList');
+//* invocar el metodo que envia todo al servidor
+          final responseServer = await service.sendAnalyticInfoToServer();
+          debugPrint('respuesta de envio servidor: \n $responseServer');
+          // final getUserInfoAnalytics =
+          //     await DeviceDataService().getUserInfoAnalytics();
+          // final response = getUserInfoAnalytics?.toJson();
+          // debugPrint(response);
         },
         child: const Icon(Icons.search_outlined),
       ),

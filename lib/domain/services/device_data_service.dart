@@ -21,20 +21,22 @@ class DeviceDataService {
 // el constructor lleva los assert que verifica los permisos en los archivos de configuracion de las plataformas
 //android manifest y info.plist
 
-  Future<UserDataInfo?> getUserDataInfo() async {
-    final userData = UserDataInfo();
-    try {
-      userData.deviceData = await getDeviceData();
-      userData.location = await getUserLocation();
-      userData.networkType = await getNetworkType();
-      userData.wifiNetworkList = await getWifiNetworkInfo();
+  // Future<UserDataInfo?> getUserDataInfo() async {
+  //   debugPrint('se inicio le proceso de getUserDataInfo');
+  //   final userData = UserDataInfo();
+  //   try {
+  //     // userData.deviceData = await getDeviceData();
+  //     // userData.location = await getUserLocation();
+  //     // userData.networkType = await getNetworkType();
+  //     // userData.wifiNetworkList = await getWifiNetworkInfo();
+  //     //TODO: falta lo de optener las aplicaciones
 
-      return userData;
-    } catch (e) {
-      debugPrint('Excepción $e');
-      return null;
-    }
-  }
+  //     return userData;
+  //   } catch (e) {
+  //     debugPrint('Excepción $e');
+  //     return null;
+  //   }
+  // }
 
 //TODO: extraer a otra clase que será la visible y llamar a los metodos dentro de este servicio
 //al final se debe terminar con una llamada http a un servicio REST
@@ -42,11 +44,11 @@ class DeviceDataService {
     final userData = UserDataInfo();
     try {
       userData.deviceData = await getDeviceData();
-      userData.location = await getUserLocation();
-      userData.networkType = await getNetworkType();
-      userData.wifiNetworkList = await getWifiNetworkInfo();
-      userData.btDeviceInfoList = await getBTDevicesInfo();
-      userData.installedAppList = await getInstalledAppsInfo();
+      // userData.location = await getUserLocation();
+      // userData.networkType = await getNetworkType();
+      // userData.wifiNetworkList = await getWifiNetworkInfo();
+      // userData.btDeviceInfoList = await getBTDevicesInfo();
+      // userData.installedAppList = await getInstalledAppsInfo();
       final infoAnalytics = InfoAnalytics(userData: userData);
       return infoAnalytics;
     } catch (e) {
